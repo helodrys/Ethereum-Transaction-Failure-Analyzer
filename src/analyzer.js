@@ -16,16 +16,18 @@ async function analyzetransaction(txHash) {
     }
     const gasdata = await getGasCostUSD(txReceipt, tx);
     console.log("===========ANALYZING TRANSACTION===========");
-
     if (txReceipt.status === 1) {
-        return {
+        const answer = {
             status: "success",
             transactionHash: tx.hash,
             blockNumber: txReceipt.blockNumber,
             gasUsed: txReceipt.gasUsed.toString(),
+            to: tx.to,
+            from: tx.from,
             gasCostEth: gasdata.eth,
-            gasCostUSD: gasdata.usd,
+            gasCostUSD: gasdata.usd + " $"
         }
+    console.log(JSON.stringify(answer, null, 2))
     }else if (txReceipt.status === 0) {
         console.log("Transaction failed");
         console.log(`Gas Used: ${txReceipt.gasUsed.toString()}`);
@@ -85,6 +87,8 @@ async function getGasCostUSD(receipt, tx) {
         };
 }
 
-analyzetransaction("0x9f541b1f5ccd22c9260321f66b2e3a3a485237eb19e12f7e1c48147e77c8315c"); // ts failed hash
+analyzetransaction("0x3c7ed3d163214b908f710b5dc96c481f7235ab30bd331d12beab29a3e919d72b"); // ts failed hash
+
+// 0x9f541b1f5ccd22c9260321f66b2e3a3a485237eb19e12f7e1c48147e77c8315c -> failed hashed
 
 
